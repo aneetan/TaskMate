@@ -1,27 +1,18 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { BrowserRouter, Route, Routes } from "react-router";
+import Login from "./pages/Login";
+import './App.css';
+import Register from "./pages/Register";
 
 function App() {
-  const [message, setMessage] = useState('');
-
-  useEffect(() => {
-    axios.get('http://localhost:3000/api')
-      .then(response => {
-        setMessage(response.data.message);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-        setMessage('Failed to fetch message from server');
-      });
-  }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>React + TypeScript + Express</h1>
-        <p>Server says: {message}</p>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login/>} />
+        <Route path="/login" element={<Login/>} />
+        <Route path="/register" element={<Register/>} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
