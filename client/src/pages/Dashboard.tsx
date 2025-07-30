@@ -1,10 +1,10 @@
 
 const Dashboard = () => {
   return (
-    <>
-        <h1 className="text-2xl font-bold mb-4">Main Content</h1>
-        <p>This content will be pushed when the sidebar opens.</p>
-    </>
+    <div className="bg-white rounded-lg shadow p-6">
+        <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+        <p>Welcome to your dashboard. This content adjusts based on sidebar state.</p>
+    </div>
   )
 }
 
