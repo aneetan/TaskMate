@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 import { FaTimes } from "react-icons/fa";
+import { MdLogout } from "react-icons/md";
+import { NavLink } from "react-router";
 
 interface SidebarProps {
     isOpen: boolean;
@@ -13,7 +15,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, children, onClose }) => {
             <div className={`fixed flex flex-col top-0 left-0 h-[100vh] bg-gray-200 text-gray-800 shadow-lg
                 transform transition-all duration-300 ease-in-out z-50
                 ${isOpen ? 'translate-x-0 w-64' : 'w-16'}`}>
-                <div className="flex items-center justify-between p-4 border-b border-gray-700">
+                <div className="flex items-center justify-between p-4 shadow-xs">
                     {isOpen ? (
                       <>
                         <h2 className="text-2xl font-bold text-[var(--primary-color)]">TaskMate</h2>

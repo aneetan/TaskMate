@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Navbar from '../Navbar';
 import Sidebar from '../Sidebar';
 import { NavLink, Outlet } from 'react-router';
-import { MdDashboard, MdTask, MdTaskAlt } from 'react-icons/md';
+import { MdChecklist, MdDashboard, MdKeyboardDoubleArrowRight } from 'react-icons/md';
 import type { IconType } from 'react-icons';
 
 interface NavItems {
@@ -17,8 +17,8 @@ const UserLayout = () => {
     
     const navLinks: NavItems[] = [
         { item: "Dashboard", action: "/dashboard", icon: MdDashboard },
-        { item: "Items", action: "/items", icon: MdTask },
-        { item: "Todo", action: "/todo", icon: MdTaskAlt },
+        { item: "Upcoming", action: "/upcoming", icon: MdKeyboardDoubleArrowRight },
+        { item: "Today", action: "/today", icon: MdChecklist },
     ]
 
     const toggleSidebar = () => {
@@ -39,8 +39,8 @@ const UserLayout = () => {
                                 ${isActive 
                                     ? 'bg-[var(--primary-color-hover)] text-white' 
                                     : 'hover:bg-[var(--primary-light)]'
-                                }`
-                            }
+                                }
+                                `}
                             title={!isSidebarOpen ? item.item : ''}
                         >
                             <item.icon className="text-2xl" />
@@ -52,7 +52,7 @@ const UserLayout = () => {
             </Sidebar>
 
             {/* Main content */}
-            <main className={`pt-16 transition-all duration-300 ${isSidebarOpen ? 'md:ml-64' : 'md:ml-16'} p-4`}>
+            <main className={`pt-16 transition-all duration-300 ${isSidebarOpen ? 'md:ml-64' : 'md:ml-16'} p-4 mt-4`}>
                 <Outlet />
             </main>
         </div>
