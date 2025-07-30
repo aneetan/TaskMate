@@ -52,7 +52,7 @@ const UserLayout = () => {
             </Sidebar>
 
             {/* Main content */}
-            <main className={`pt-16 transition-all duration-300 ${isSidebarOpen ? 'md:ml-64' : 'md:ml-16'} p-4 mt-4`}>
+            <main className={`pt-16 transition-all duration-300 ${isSidebarOpen ? 'ml-64' : 'ml-16'} p-4 mt-4`}>
                 <Outlet />
             </main>
         </div>

@@ -16,6 +16,9 @@ function App() {
 
         <Route element={<UserLayout/>}>
             <Route path="dashboard" element={<Dashboard/>} />
+            <Route path="upcoming" element={<div>Upcoming</div>} />
+            <Route path="today" element={<div> Today </div>} />
+
         </Route>
       </Routes>
     </BrowserRouter>
