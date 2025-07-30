@@ -5,7 +5,7 @@ export default function Slider() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="relative h-screen">
+    <div className="relative">
       {/* Main Content */}
       <div>
         <button
@@ -51,7 +51,7 @@ export default function Slider() {
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2"
               />
             </div>
-            <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded w-full">
+            <button className="bg-[var(--primary-color)] hover:bg-[var(--primary-color-hover)] text-white px-4 py-2 rounded w-full">
               Save
             </button>
           </div>
