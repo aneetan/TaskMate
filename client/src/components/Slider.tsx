@@ -10,7 +10,7 @@ export default function Slider() {
       <div>
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-gray-200 hover:bg-gray-300 text-gray-600 px-4 py-2 rounded w-200"
+          className="bg-gray-200 hover:bg-gray-300 text-gray-600 px-4 py-2 rounded md:w-[60%] w-full shadow-sm"
         >
             <div className='flex items-center gap-4'>
              <FaPlus/> Add Item
@@ -20,7 +20,7 @@ export default function Slider() {
 
       {/* Slider Panel */}
       <div
-        className={`fixed top-16 right-0 h-full w-80 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-20 ${
+        className={`fixed top-16 right-0 h-full md:w-[30%] w-[60%] bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-20 ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
