@@ -1,21 +1,24 @@
 import { useState } from 'react';
-import { RiArrowDropDownLine, RiDeleteBack2Line, RiDeleteBinLine, RiEditLine, RiInformationLine } from 'react-icons/ri';
+import { RiArrowDropDownLine, RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 interface TaskProps {
   id: number;
   title: string;
   category: string;
   isCompleted: boolean;
+  priority: string;
+  status: string;
   description ?: string;
+  due_date : Date;
 }
 
 const TaskList = () => {
     const [expandedTaskId, setExpandedTaskId] = useState<number | null>(null);
     const [tasks, setTasks] = useState<TaskProps[]>([
-        { id: 1, title: "Task 1", category: "Personal", isCompleted: false,  description: "This is a personal task description" },
-        { id: 2, title: "Task 2", category: "Work", isCompleted: false },
-        { id: 3, title: "Task 3", category: "Others", isCompleted: true, description: "Miscellaneous task information" },
-        { id: 4, title: "Task 4", category: "Personal", isCompleted: false },
+        { id: 1, title: "Task 1", category: "Personal", isCompleted: false,  description: "This is a personal task description", due_date: new Date("2025-08-01"), priority:"high", status: "pending" },
+        { id: 2, title: "Task 2", category: "Work", isCompleted: false, due_date: new Date("2025-08-01"), priority:"low", status: "completed" },
+        { id: 3, title: "Task 3", category: "Others", isCompleted: true, description: "Miscellaneous task information", due_date: new Date("2025-08-01"), priority:"medium", status: "inProgress" },
+        { id: 4, title: "Task 4", category: "Personal", isCompleted: false, due_date: new Date("2025-08-01"), priority:"high", status: "pending" },
     ]);
 
   const toggleExpandTask = (id: number) => {
@@ -68,12 +71,14 @@ const TaskList = () => {
                {expandedTaskId === task.id && (
                   <div className={`p-4 ${task.isCompleted? 'bg-[var(--primary-lighter)]' : 'bg-gray-200'} animate-accordion-open`}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {task.description && (
                     <div>
                       <h4 className="text-sm font-medium text-gray-500">Description</h4>
                       <p className="mt-1 text-sm text-gray-700">
-                        {task.description || "No description provided"}
+                        {task.description}
                       </p>
                     </div>
+                    )}
                   </div>
                   
                   <div className="mt-4 flex justify-end space-x-2">
