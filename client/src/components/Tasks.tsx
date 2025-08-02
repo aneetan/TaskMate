@@ -22,10 +22,10 @@ const Tasks = ({data} : {data: TaskProps[]}) => {
                         <FaRegCheckCircle className="w-4 mt-1 h-4 text-gray-600"/>
                     )}
 
-                    <span className="font-semibold text-base truncate w-[220px] cursor-pointer hover:underline"> {task.title} </span>
+                    <span className="font-semibold text-base truncate md:w-[220px] w-[100px] cursor-pointer hover:underline"> {task.title} </span>
                 </div>
 
-                <div>
+                <div className="">
                     {/* -------- Priority --------- */}
                     <div className={`rounded-4xl px-3 py-1 text-xs text-white w-fit ml-4
                         ${task.priority === "high" ? "bg-red-500" :

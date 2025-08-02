@@ -1,6 +1,8 @@
 import { IoIosAddCircleOutline } from "react-icons/io"
 import Tasks from "./Tasks"
 import type { TaskProps } from "../types/Tasks";
+import { AddTaskModal } from "./AddTaskModal";
+import { useState } from "react";
 
 interface TaskStatusProps {
     header: string;
@@ -8,6 +10,9 @@ interface TaskStatusProps {
 }
 
 const TaskStatusFilter: React.FC<TaskStatusProps> = ({header, tasks}) => {
+     const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleAddTask = (newTask: { title: string; description: string; priority: string }) => {
+    };
 
   return (
         <div className="md:mr-12 mb-12">
@@ -24,11 +29,19 @@ const TaskStatusFilter: React.FC<TaskStatusProps> = ({header, tasks}) => {
             </div>
 
             <div className="mt-6">
-              <button className="flex gap-4 border-2 text-gray-400 border-gray-400 border-dashed w-full justify-center py-2 
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="flex gap-4 border-2 text-gray-400 border-gray-400 border-dashed w-full justify-center py-2 
                 hover:border-solid hover:border-purple-400 hover:bg-purple-100 transition-all rounded-xl cursor-pointer">
                 <IoIosAddCircleOutline className="w-6 h-6" />
                 Add Task
                 </button>
+
+                 <AddTaskModal
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    onAddTask={handleAddTask}
+                />
             </div>
         </div>
   )
