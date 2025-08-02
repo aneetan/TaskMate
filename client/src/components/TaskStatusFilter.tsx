@@ -10,8 +10,8 @@ interface TaskStatusProps {
 const TaskStatusFilter: React.FC<TaskStatusProps> = ({header, tasks}) => {
 
   return (
-        <div className="mr-12">
-            <div className="flex justify-between items-center ">
+        <div className="md:mr-12 mb-12">
+            <div className="flex w-full justify-between items-center">
                 <div className="font-bold text-xl text-gray-800"> {header} </div>
                 <div className="flex gap-4">
                     <button className="cursor-pointer transition-colors hover:text-purple-700">

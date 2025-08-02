@@ -13,16 +13,16 @@ const Tasks = ({data} : {data: TaskProps[]}) => {
         <div className="shadow-sm p-4 mt-4">
             {/* ---------- Task Header --------- */}
             <div className="flex items-start justify-between mb-2">
-                <div className="flex items-center gap-2">
+                <div className="flex items-start gap-2">
                     {task.status === "todo" ? (
-                        <MdOutlineTimer className="w-5 h-5 text-gray-600"/>
+                        <MdOutlineTimer className="w-5 mt-1 h-5 text-gray-600"/>
                     ): task.status === "in-progress"? (
-                        <GrInProgress className="w-4 h-4 text-gray-600"/>
+                        <GrInProgress className="w-4 mt-1 h-4 text-gray-600"/>
                     ): (
-                        <FaRegCheckCircle className="w-4 h-4 text-gray-600"/>
+                        <FaRegCheckCircle className="w-4 mt-1 h-4 text-gray-600"/>
                     )}
 
-                    <span className="font-semibold text-base"> {task.title} </span>
+                    <span className="font-semibold text-base truncate w-[220px] cursor-pointer hover:underline"> {task.title} </span>
                 </div>
 
                 <div>
@@ -40,9 +40,11 @@ const Tasks = ({data} : {data: TaskProps[]}) => {
                 <span className="rounded-4xl px-3 py-1 text-xs text-white w-fit bg-purple-500">
                     {task.category}
                 </span>
-                <span className="mt-2 text-gray-500"> {task.description} </span>
+                <span className="mt-2 text-gray-500 truncate">
+                    {task.description}
+                </span>
             </div>
-            <div className="flex justify-between mt-4">
+            <div className="flex justify-between mt-4 ml-4">
                 <span className={`text-sm font-semibold
                     ${moment(task.due_date).isBefore(moment(), 'day')? "text-red-500": "text-green-500"}
                 `}>
