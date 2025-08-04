@@ -19,13 +19,13 @@ const Dashboard = () => {
         <h1 className="text-2xl font-bold mb-4"> Dashboard </h1>
         <div className="flex md:flex-row flex-col justify-between">
           <div className="w-full md:w-1/3">
-            <TaskStatusFilter tasks={todoTask} header="To do"/>
+            <TaskStatusFilter tasks={todoTask} header="To do" status="todo"/>
           </div>
           <div className="w-full md:w-1/3">
-            <TaskStatusFilter tasks={inProgressTask} header="In progress"/>
+            <TaskStatusFilter tasks={inProgressTask} header="In progress" status="in-progress"/>
           </div>
           <div className="w-full md:w-1/3">
-            <TaskStatusFilter tasks={doneTask} header="Completed"/>
+            <TaskStatusFilter tasks={doneTask} header="Completed" status="done"/>
           </div>
         </div>
     </div>

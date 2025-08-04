@@ -36,6 +36,7 @@ const ProfileDropdown = () => {
                 className="w-8 h-8 object-cover rounded-full"
                 alt="Profile"
                 />
+                <span className="mx-2 font-semibold">  User </span>
                 <RiArrowDropDownLine className={`text-2xl transition-transform ${isOpen ? 'rotate-180' : ''}`} />
             </button>
 

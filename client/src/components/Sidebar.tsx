@@ -1,7 +1,5 @@
 import type { ReactNode } from "react";
 import { FaTimes } from "react-icons/fa";
-import { MdLogout } from "react-icons/md";
-import { NavLink } from "react-router";
 
 interface SidebarProps {
     isOpen: boolean;

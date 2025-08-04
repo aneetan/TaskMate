@@ -1,4 +1,4 @@
-import type { Category, Priority, TaskProps } from "../types/Tasks";
+import type { Priority, TaskProps } from "../types/Tasks";
 
 interface ViewTaskProps {
   isOpen: boolean;

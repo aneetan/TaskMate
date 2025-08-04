@@ -3,15 +3,13 @@ import type { TaskProps } from "../types/Tasks";
 interface DeleteTaskProps {
   isOpen: boolean;
   onClose: () => void;
-  onDeleteTask: (task: TaskProps) => void;
   task: TaskProps | null;
 }
 
-const DeleteModal = ({ isOpen, onClose, onDeleteTask, task }: DeleteTaskProps) => {
+const DeleteModal = ({ isOpen, onClose, task }: DeleteTaskProps) => {
   if (!isOpen || !task) return null;
 
   const handleDelete = () => {
-    onDeleteTask(task);
     onClose();
   };
 

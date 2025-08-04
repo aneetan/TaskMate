@@ -13,14 +13,6 @@ const Tasks = ({data} : {data: TaskProps[]}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [viewModalOpen, setViewModalOpen] = useState(false);
-
-    const handleAddTask = (newTask: TaskProps) => {
-        //api call here
-     };
-
-    const handleDelete = (newTask: TaskProps) => {
-        //api call here
-     };
      
   return (
     <>
@@ -44,18 +36,17 @@ const Tasks = ({data} : {data: TaskProps[]}) => {
                         className="font-semibold text-base truncate md:w-[180px] w-[80px] cursor-pointer hover:underline"
                         onClick={() => setViewModalOpen(true)}
                     > {task.title} </span>
-                    
-
-                    <ViewTask 
-                    isOpen={viewModalOpen} 
-                    onClose={() => setViewModalOpen(false)} 
-                    task={task}
-                    />
                 </div>
+
+                <ViewTask 
+                isOpen={viewModalOpen} 
+                onClose={() => setViewModalOpen(false)} 
+                task={task}
+                />
 
                 <div className="">
                     {/* -------- Priority --------- */}
-                    <div className={`rounded-4xl px-3 py-1 text-xs text-white w-fit ml-4
+                    <div className={`rounded-4xl px-2 py-1 text-xs text-white w-fit ml-2
                         ${task.priority === "High" ? "bg-red-500" :
                             task.priority === "Low" ? 'bg-green-500':
                             'bg-yellow-500'
@@ -89,8 +80,8 @@ const Tasks = ({data} : {data: TaskProps[]}) => {
                     <AddTaskModal
                         isOpen={isModalOpen}
                         onClose={() => setIsModalOpen(false)}
-                        onAddTask={handleAddTask}
                         isEdit={true}
+                        status={task.status}
                         taskToEdit={task}
                     />
                     <button
@@ -102,7 +93,6 @@ const Tasks = ({data} : {data: TaskProps[]}) => {
                     <DeleteModal
                         isOpen={isDeleteModalOpen}
                         onClose={() => setIsDeleteModalOpen(false)}
-                        onDeleteTask={handleDelete}
                         task={task}
                     />
                 </div>
