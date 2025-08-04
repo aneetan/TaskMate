@@ -4,13 +4,22 @@ import { MdDeleteOutline, MdOutlineTimer } from "react-icons/md";
 import type { TaskProps } from "../types/Tasks";
 import moment from "moment";
 import { formatDueDate } from "../helper/formatDueDate";
+import { AddTaskModal } from "./AddTaskModal";
+import { useState } from "react";
 
 const Tasks = ({data} : {data: TaskProps[]}) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleAddTask = (newTask: TaskProps) => {
+        //api call here
+     };
      
   return (
     <>
     {data.map((task) => (
-        <div className="shadow-sm p-4 mt-4">
+        <div
+            className="shadow-sm p-4 mt-4"
+        >
             {/* ---------- Task Header --------- */}
             <div className="flex items-start justify-between mb-2">
                 <div className="flex items-start gap-2">
@@ -22,17 +31,17 @@ const Tasks = ({data} : {data: TaskProps[]}) => {
                         <FaRegCheckCircle className="w-4 mt-1 h-4 text-gray-600"/>
                     )}
 
-                    <span className="font-semibold text-base truncate md:w-[220px] w-[100px] cursor-pointer hover:underline"> {task.title} </span>
+                    <span className="font-semibold text-base truncate md:w-[180px] w-[80px] cursor-pointer hover:underline"> {task.title} </span>
                 </div>
 
                 <div className="">
                     {/* -------- Priority --------- */}
                     <div className={`rounded-4xl px-3 py-1 text-xs text-white w-fit ml-4
-                        ${task.priority === "high" ? "bg-red-500" :
-                            task.priority === "low" ? 'bg-green-500':
+                        ${task.priority === "High" ? "bg-red-500" :
+                            task.priority === "Low" ? 'bg-green-500':
                             'bg-yellow-500'
                         }`}>
-                        {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
+                        {task.priority}
                     </div>
                 </div>
             </div>
@@ -46,14 +55,25 @@ const Tasks = ({data} : {data: TaskProps[]}) => {
             </div>
             <div className="flex justify-between mt-4 ml-4">
                 <span className={`text-sm font-semibold
-                    ${moment(task.due_date).isBefore(moment(), 'day')? "text-red-500": "text-green-500"}
+                    ${task.due_date && moment(task.due_date).isBefore(moment(), 'day') ? "text-red-500" : "text-green-500"}
                 `}>
-                    {formatDueDate(task.due_date)}
+                    {task.due_date ? formatDueDate(task.due_date) : "No due date"}
                 </span>
                 <div className="flex justify-between gap-4">
-                    <button className="text-purple-800 cursor-pointer">
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="text-purple-800 cursor-pointer"
+                    >
                         <FaRegEdit className="w-4 h-4"/>
                     </button>
+
+                    <AddTaskModal
+                        isOpen={isModalOpen}
+                        onClose={() => setIsModalOpen(false)}
+                        onAddTask={handleAddTask}
+                        isEdit={true}
+                        taskToEdit={task}
+                    />
                     <button className="text-red-700 cursor-pointer">
                         <MdDeleteOutline className="w-5 h-5"/>  
                     </button>

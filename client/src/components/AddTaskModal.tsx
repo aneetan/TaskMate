@@ -1,24 +1,84 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { RiArrowDropDownLine } from 'react-icons/ri';
+import { type Priority, type Category, type TaskProps } from '../types/Tasks';
+import moment from 'moment';
 
 interface AddTaskModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddTask: (task: { title: string; description: string; priority: string }) => void;
+  onAddTask: (task: TaskProps) => void;
+  isEdit: boolean;
+  taskToEdit: TaskProps | null;
 }
 
-export const AddTaskModal = ({ isOpen, onClose, onAddTask }: AddTaskModalProps) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [priority, setPriority] = useState('medium');
+export const AddTaskModal = ({ isOpen, onClose, onAddTask, isEdit, taskToEdit }: AddTaskModalProps) => {
+  const [formData, setFormData] = useState<TaskProps>({
+    id: '',
+    title: '', 
+    description: '',
+    category: null,
+    priority: null,
+    due_date: null,
+    status: ''
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const {name, value} = e.target;
+
+    setFormData((prev) => ({
+        ...prev,
+        [name]: name === 'due_date'
+            ? new Date(value)
+            : value
+    }))
+  }
+
+  useEffect(() => {
+    if(isEdit && taskToEdit){
+        setFormData({
+            id: taskToEdit.id,
+            title: taskToEdit.title,
+            description: taskToEdit.description,
+            status: taskToEdit.status,
+            priority: taskToEdit.priority,
+            due_date: taskToEdit.due_date,
+            category: taskToEdit.category
+        })
+    } else {
+        resetForm();
+    }
+  }, [isEdit, taskToEdit]);
+
+  const resetForm = () => {
+    setFormData({
+        id: '',
+        title: '', 
+        description: '',
+        category: null,
+        priority: null,
+        due_date: null,
+        status: ''
+    })
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onAddTask({ title, description, priority });
+
+    if (!formData.title.trim() || !formData.due_date) return;
+
+    const task = {
+        id: Date.now().toString(),
+        title: formData.title.trim(),
+        description : (formData.description ?? '').trim(),
+        priority: formData.priority,
+        category: formData.category,
+        due_date: new Date(formData.due_date),
+        status: ""
+    }
+    onAddTask(task);
     onClose();
-    setTitle('');
-    setDescription('');
+    resetForm();
   };
 
   if (!isOpen) return null;
@@ -27,7 +87,9 @@ export const AddTaskModal = ({ isOpen, onClose, onAddTask }: AddTaskModalProps) 
     <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-xl p-6 w-full max-w-md">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Add New Task</h2>
+          <h2 className="text-xl font-bold">
+            {isEdit ? 'Edit Task' : 'Add New Task'}
+          </h2>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
             <IoClose className="w-6 h-6" />
           </button>
@@ -39,9 +101,10 @@ export const AddTaskModal = ({ isOpen, onClose, onAddTask }: AddTaskModalProps) 
               <label className="block text-sm font-medium text-gray-700 mb-1">Title*</label>
               <input
                 type="text"
-                value={title}
+                name='title'
+                value={formData.title}
                 placeholder='Eg. Completing assignment'
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 required
               />
@@ -50,11 +113,13 @@ export const AddTaskModal = ({ isOpen, onClose, onAddTask }: AddTaskModalProps) 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
               <textarea
-                value={description}
+                value={formData.description}
+                name='description'
                 placeholder='Enter task description (optional)'
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 rows={3}
+                required
               />
             </div>
             
@@ -63,8 +128,9 @@ export const AddTaskModal = ({ isOpen, onClose, onAddTask }: AddTaskModalProps) 
               <label className="block text-sm font-medium text-gray-700 mb-1">Priority*</label>
               <div className="relative">
                 <select
-                    value={priority}
-                    onChange={(e) => setPriority(e.target.value)}
+                    value={formData.priority as Priority}
+                    name="priority"
+                    onChange={handleChange}
                     className="block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 appearance-none"
                 >
                     {['Low', 'Medium', 'High'].map((level) => (
@@ -83,8 +149,9 @@ export const AddTaskModal = ({ isOpen, onClose, onAddTask }: AddTaskModalProps) 
               <label className="block text-sm font-medium text-gray-700 mb-1">Category*</label>
                <div className="relative">
                 <select
-                    value={priority}
-                    onChange={(e) => setPriority(e.target.value)}
+                    value={formData.category as Category}
+                    name='category'
+                    onChange={handleChange}
                     className="block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 appearance-none"
                 >
                     {['Personal', 'Work', 'College', 'Others'].map((level) => (
@@ -104,14 +171,13 @@ export const AddTaskModal = ({ isOpen, onClose, onAddTask }: AddTaskModalProps) 
               <label className="block text-sm font-medium text-gray-700 mb-1">Due Date*</label>
               <input
                 type="date"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                value={formData.due_date ? moment(formData.due_date).format('YYYY-MM-DD') : ''}
+                min={moment().format('YYYY-MM-DD')}
+                onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 required
               />
             </div>
-
-            
           </div>
           
           <div className="mt-6 flex justify-end gap-3">
@@ -126,7 +192,7 @@ export const AddTaskModal = ({ isOpen, onClose, onAddTask }: AddTaskModalProps) 
               type="submit"
               className="px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
             >
-              Add Task
+              {isEdit? 'Update Task': 'Add Task'}
             </button>
           </div>
         </form>
