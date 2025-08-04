@@ -7,10 +7,12 @@ import { formatDueDate } from "../helper/formatDueDate";
 import { AddTaskModal } from "./AddTaskModal";
 import { useState } from "react";
 import DeleteModal from "./DeleteModal";
+import ViewTask from "./ViewTask";
 
 const Tasks = ({data} : {data: TaskProps[]}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [viewModalOpen, setViewModalOpen] = useState(false);
 
     const handleAddTask = (newTask: TaskProps) => {
         //api call here
@@ -25,6 +27,7 @@ const Tasks = ({data} : {data: TaskProps[]}) => {
     {data.map((task) => (
         <div
             className="shadow-sm p-4 mt-4"
+            key={task.id}
         >
             {/* ---------- Task Header --------- */}
             <div className="flex items-start justify-between mb-2">
@@ -37,7 +40,17 @@ const Tasks = ({data} : {data: TaskProps[]}) => {
                         <FaRegCheckCircle className="w-4 mt-1 h-4 text-gray-600"/>
                     )}
 
-                    <span className="font-semibold text-base truncate md:w-[180px] w-[80px] cursor-pointer hover:underline"> {task.title} </span>
+                    <span
+                        className="font-semibold text-base truncate md:w-[180px] w-[80px] cursor-pointer hover:underline"
+                        onClick={() => setViewModalOpen(true)}
+                    > {task.title} </span>
+                    
+
+                    <ViewTask 
+                    isOpen={viewModalOpen} 
+                    onClose={() => setViewModalOpen(false)} 
+                    task={task}
+                    />
                 </div>
 
                 <div className="">
@@ -60,7 +73,7 @@ const Tasks = ({data} : {data: TaskProps[]}) => {
                 </span>
             </div>
             <div className="flex justify-between mt-4 ml-4">
-                <span className={`text-sm font-semibold
+                <span className={`text-sm font-semibold md:w-full w-1/2
                     ${task.due_date && moment(task.due_date).isBefore(moment(), 'day') ? "text-red-500" : "text-green-500"}
                 `}>
                     {task.due_date ? formatDueDate(task.due_date) : "No due date"}

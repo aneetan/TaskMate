@@ -17,7 +17,7 @@ const DeleteModal = ({ isOpen, onClose, onDeleteTask, task }: DeleteTaskProps) =
 
   return (
     <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 w-full max-w-md">
+      <div className="bg-white rounded-xl p-6 w-full max-w-md  md:m-0 m-8">
         <h2 className="text-xl font-bold text-gray-800 mb-4">Delete Task</h2>
         <p className="text-gray-600 mb-6">
           Are you sure you want to delete the task <span className="font-semibold">"{task.title}"</span>? 

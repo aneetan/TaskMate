@@ -85,7 +85,7 @@ export const AddTaskModal = ({ isOpen, onClose, onAddTask, isEdit, taskToEdit }:
 
   return (
     <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 w-full max-w-md">
+      <div className="bg-white rounded-xl p-6 w-full max-w-md md:m-0 m-8">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">
             {isEdit ? 'Edit Task' : 'Add New Task'}
