@@ -21,9 +21,21 @@ const TaskStatusFilter: React.FC<TaskStatusProps> = ({header, tasks}) => {
             <div className="flex w-full justify-between items-center">
                 <div className="font-bold text-xl text-gray-800"> {header} </div>
                 <div className="flex gap-4">
-                    <button className="cursor-pointer transition-colors hover:text-purple-700">
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="cursor-pointer transition-colors hover:text-purple-700"
+                    >
                         <IoIosAddCircleOutline className="w-6 h-6"/>
                     </button>
+
+                    <AddTaskModal
+                        isOpen={isModalOpen}
+                        onClose={() => setIsModalOpen(false)}
+                        onAddTask={handleAddTask}
+                        isEdit={false}
+                        taskToEdit={null}
+                    />
+
                 </div>
             </div> 
             <div className="container">

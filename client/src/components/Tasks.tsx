@@ -6,11 +6,17 @@ import moment from "moment";
 import { formatDueDate } from "../helper/formatDueDate";
 import { AddTaskModal } from "./AddTaskModal";
 import { useState } from "react";
+import DeleteModal from "./DeleteModal";
 
 const Tasks = ({data} : {data: TaskProps[]}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const handleAddTask = (newTask: TaskProps) => {
+        //api call here
+     };
+
+    const handleDelete = (newTask: TaskProps) => {
         //api call here
      };
      
@@ -74,9 +80,18 @@ const Tasks = ({data} : {data: TaskProps[]}) => {
                         isEdit={true}
                         taskToEdit={task}
                     />
-                    <button className="text-red-700 cursor-pointer">
+                    <button
+                        onClick={() => setIsDeleteModalOpen(true)}
+                        className="text-red-700 cursor-pointer"
+                    >
                         <MdDeleteOutline className="w-5 h-5"/>  
                     </button>
+                    <DeleteModal
+                        isOpen={isDeleteModalOpen}
+                        onClose={() => setIsDeleteModalOpen(false)}
+                        onDeleteTask={handleDelete}
+                        task={task}
+                    />
                 </div>
             </div>
            
