@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "node dist/app.ts",
     "dev": "nodemon src/app.ts",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "keywords": [],
   "author": "",

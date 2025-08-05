@@ -1,7 +1,12 @@
 module.exports = {
-  testEnvironment: 'node', // or 'jsdom' for frontend tests
-  testMatch: ['**/__tests__/**/*.test.[jt]s?(x)'],
+  testEnvironment: 'node', // Use 'jsdom' for frontend React tests
+  testMatch: [
+    '**/__tests__/**/*.test.[jt]s?(x)',
+    '**/?(*.)+(spec|test).[jt]s?(x)'
+  ],
+  roots: ['<rootDir>/server'], // Point to your server directory
+  // For TypeScript projects:
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': 'ts-jest' // if using TypeScript
+    '^.+\\.(ts|tsx)$': 'ts-jest'
   }
 };
