@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
-import Task from "./task";
-import User from "./user";
+import Task from "./task.model";
+import User from "./user.model";
 
 interface Models {
     User: typeof User;

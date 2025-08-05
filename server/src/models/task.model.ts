@@ -1,5 +1,5 @@
 import { DataTypes, InitOptions, Model, ModelAttributes } from "sequelize";
-import { Category, Priority, Status, TaskAttributes } from "./types/user.types";
+import { Category, Priority, Status, TaskAttributes } from "./types/task.types";
 
 class Task extends Model<TaskAttributes> implements TaskAttributes{
     public id !: number;
@@ -10,6 +10,8 @@ class Task extends Model<TaskAttributes> implements TaskAttributes{
     public status !: Status;
     public due_date !: Date;
     public userId !: number;
+    public readonly createdAt !: Date;
+    public readonly updatedAt !: Date;
 
     static initialize(sequelize: any): typeof Task{
         const attributes: ModelAttributes<Task, TaskAttributes> = {

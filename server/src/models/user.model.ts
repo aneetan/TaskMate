@@ -2,7 +2,7 @@ import { DataTypes, InitOptions, Model, ModelAttributes } from "sequelize";
 import { UserAttributes } from "./types/user.types";
 import bcrypt from 'bcrypt';
 
-class User extends  Model<UserAttributes> implements UserAttributes {
+class User extends  Model<UserAttributes, Omit<UserAttributes, 'id'>> implements UserAttributes {
     public id!: number;
     public fullName!: string;
     public email!: string;
@@ -45,7 +45,15 @@ class User extends  Model<UserAttributes> implements UserAttributes {
             sequelize,
             modelName: 'User',
             tableName: 'users',
-            timestamps: false
+            timestamps: false,
+            defaultScope: {
+                attributes: { exclude : ['password'] }
+            },
+            scopes: {
+                withPassword: {
+                    attributes: { include: ['password'] }
+                }
+            }
         };
 
         return User.init(attributes, options) as typeof User;
