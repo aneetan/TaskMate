@@ -14,6 +14,10 @@ const Dashboard = () => {
   const inProgressTask = tasks.filter((item) => item.status === "in-progress");
   const doneTask = tasks.filter((item) => item.status === "done");
 
+  if(!todoTask){
+    setTasks(tasks)
+  }
+
   return (
     <div className="rounded-lg shadow p-6 inset-0 bg-opacity-50 backdrop-blur-sm z-40">
         <h1 className="text-2xl font-bold mb-4"> Dashboard </h1>

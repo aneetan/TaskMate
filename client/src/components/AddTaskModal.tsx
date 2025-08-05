@@ -62,10 +62,6 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
     })
   }
 
-  const validateForm = () => {
-    
-  }
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 

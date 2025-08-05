@@ -12,10 +12,6 @@ interface TaskStatusProps {
 
 const TaskStatusFilter: React.FC<TaskStatusProps> = ({header, tasks, status}) => {
      const [isModalOpen, setIsModalOpen] = useState(false);
-     
-     const handleAddTask = (newTask: TaskProps) => {
-        //api call here
-     };
 
   return (
         <div className="md:mr-12 mb-12">
@@ -32,7 +28,6 @@ const TaskStatusFilter: React.FC<TaskStatusProps> = ({header, tasks, status}) =>
                     <AddTaskModal
                         isOpen={isModalOpen}
                         onClose={() => setIsModalOpen(false)}
-                        onAddTask={handleAddTask}
                         isEdit={false}
                         status = {status}
                         taskToEdit={null}
@@ -56,7 +51,6 @@ const TaskStatusFilter: React.FC<TaskStatusProps> = ({header, tasks, status}) =>
                  <AddTaskModal
                     isOpen={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
-                    onAddTask={handleAddTask}
                     isEdit={false}
                     status={status}
                     taskToEdit={null}

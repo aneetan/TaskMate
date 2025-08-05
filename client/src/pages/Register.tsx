@@ -72,7 +72,11 @@ const Register:React.FC = () => {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
 
-        if(!validateForms()) return;
+        if(!validateForms()){
+            return;
+            setLoading(false);
+        }
+
         alert("register clicked");   
     }
 
