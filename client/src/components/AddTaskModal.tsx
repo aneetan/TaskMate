@@ -17,8 +17,8 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
     id: '',
     title: '', 
     description: '',
-    category: null,
-    priority: null,
+    category: 'Personal',
+    priority: 'Medium',
     due_date: null,
     status: initialStatus
   });
@@ -55,11 +55,15 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
         id: '',
         title: '', 
         description: '',
-        category: null,
-        priority: null,
+        category: "Personal",
+        priority: "Medium",
         due_date: null,
         status: initialStatus
     })
+  }
+
+  const validateForm = () => {
+    
   }
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -76,6 +80,7 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
         due_date: new Date(formData.due_date),
         status: formData.status
     }
+    console.log(task);
 
     onClose();
     resetForm();
@@ -132,18 +137,35 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Title*</label>
-              <input
-                type="text"
-                name='title'
-                value={formData.title}
-                placeholder='Eg. Completing assignment'
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                required
-              />
+            <div className='flex md:flex-row flex-col justify-between items-center gap-4'>
+              <div className='w-full md:w-1/2'>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Title*</label>
+                <input
+                  type="text"
+                  name='title'
+                  value={formData.title}
+                  placeholder='Eg. Completing assignment'
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  required
+                />
+              </div>
+
+              <div className='w-full md:w-1/2'>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Due Date*</label>
+                  <input
+                    type="date"
+                    name='due_date'
+                    value={formData.due_date ? moment(formData.due_date).format('YYYY-MM-DD') : ''}
+                    min={moment().format('YYYY-MM-DD')}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    required
+                  />
+              </div>
             </div>
+
+            
             
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
@@ -152,9 +174,8 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
                 name='description'
                 placeholder='Enter task description (optional)'
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-purple-500"
                 rows={3}
-                required
               />
             </div>
             
@@ -203,16 +224,7 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Due Date*</label>
-              <input
-                type="date"
-                name='due_date'
-                value={formData.due_date ? moment(formData.due_date).format('YYYY-MM-DD') : ''}
-                min={moment().format('YYYY-MM-DD')}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-                required
-              />
+              
             </div>
           </div>
           
