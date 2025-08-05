@@ -52,7 +52,7 @@ class User extends  Model<UserAttributes> implements UserAttributes {
     }
 
     public static associate(models: any){
-        //A user has many tasks
+        //A user has many Tasks
         User.hasMany(models.Task, {
             foreignKey: 'userId', //name of FK in task table
         });

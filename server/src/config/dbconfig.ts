@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
+import { initializeModels } from "../model/init";
 
 dotenv.config();
 
@@ -17,7 +18,11 @@ const sequelize = new Sequelize(
 export const connectToDatabase = async():Promise<void> => {
     try {
         await sequelize.authenticate();
-        await sequelize.sync({ force: false});
+        //Initialize the models
+        initializeModels(sequelize);
+
+        //sync all models
+        await sequelize.sync({ alter: true});
     } catch (error) {
         console.error("Failed to connect to the database:", error);
     }
