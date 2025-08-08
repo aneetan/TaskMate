@@ -1,4 +1,3 @@
-import { error } from 'console';
 import { NextFunction, Request, Response } from 'express';
 import { ZodObject, ZodError } from 'zod';
 

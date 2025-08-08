@@ -1,6 +1,4 @@
 import swaggerJSDoc from "swagger-jsdoc";
-import swaggerUi from 'swagger-ui-express';
-import { Express } from 'express';
 
 const options: swaggerJSDoc.Options = {
     definition: {
@@ -8,31 +6,31 @@ const options: swaggerJSDoc.Options = {
         info: {
             title: "TaskMate API documentation",
             version: '1.0.0',
-            description:"API documentation for PERN stack app"
+            description:"This includes API documentation for Taskmate application"
         },
         components: {
-            securitySchemes: {
+            securitySchemes: {      //defines authentication methods for API
                 bearerAuth: {
-                    type: 'http',
-                    scheme: 'bearer',
-                    bearerFormat: "JWT"
+                    type: 'http',       // indicates http authentication scheme
+                    scheme: 'bearer',   // specifies bearer token
+                    bearerFormat: "JWT"    // describe token format as JWT
                 }
             }
         },
-        security: [
+        security: [         //defines global security requirements
             {
-                bearerAuth: []
+                bearerAuth: [] // all routes require bearerAuth security unless overridden locally
             }
         ],
         servers: [
             {
-                url: "http://localhost:5000",
+                url: "http://localhost:3000",
                 description: "Development server" 
             },
-            //add production server here
+            //production/ staging server here
         ],
     },
-    apis: ['./src/routes/*.ts', './src/schemas/*.ts']
+    apis: ['./src/routes/*.ts', './src/schemas/*.ts'] //where swagger-jsdoc will scan for JSDoc comments to generate the documentation
 };
 
 const swaggerSpec = swaggerJSDoc(options);

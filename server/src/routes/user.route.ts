@@ -19,7 +19,7 @@ const userRouter = Router();
  *          required: true
  *          content:
  *              application/json:
- *                  schema:
+ *                  schema:     
  *                      $ref: '#/components/schemas/RegisterUser'
  *      responses:
  *          201:
@@ -31,6 +31,7 @@ const userRouter = Router();
  *
  */
 
+//schema => describes the shape or structure of that JSON data
 userRouter
     .post('/register', userController.register);
 

@@ -16,31 +16,14 @@ import { z } from "zod";
  *           type: string
  *           minLength: 5
  *           maxLength: 100
- *           example: John Doe
  *         email:
  *           type: string
  *           format: email
- *           example: user@example.com
  *         password:
  *           type: string
  *           minLength: 8
- *           example: Str0ngP@ssword
  *         confirmPassword:
  *           type: string
- *           example: Str0ngP@ssword
- * 
- *     UserResponse:
- *       type: object
- *       properties:
- *         id:
- *           type: integer
- *           example: 1
- *         fullName:
- *           type: string
- *           example: John Doe
- *         email:
- *           type: string
- *           example: user@example.com
  */
 export const registerUserSchema = z.object({
     body: z.object({

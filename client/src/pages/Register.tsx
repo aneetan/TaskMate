@@ -1,5 +1,7 @@
+import axios from "axios";
 import type React from "react";
 import { useState, type FormEvent } from "react";
+import { API_URL } from "../config/url";
 
 //form values
 interface RegisterProps {
@@ -71,13 +73,23 @@ const Register:React.FC = () => {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
+        setLoading(true);
 
-        if(!validateForms()){
-            return;
-            setLoading(false);
-        }
+        if(!validateForms()) return;
 
-        alert("register clicked");   
+        axios.post(`${API_URL}/users/register`, formData)
+            .then(response => {
+                console.log("User created successfully", response.data)
+            })
+            .catch(error => {
+                if(error.response){
+                    console.log('Error response data:', error.response.data);
+                    console.log('Error status:', error.response.status);
+                }
+            })
+            .finally(() =>{
+                setLoading(false);
+            })
     }
 
     return (
