@@ -11,3 +11,8 @@ export interface UserAttributesDto {
     password: string;
     confirmPassword: string;
 }
+
+export interface UserLoginDto {
+    email: string;
+    password: string;
+}

@@ -20,7 +20,7 @@ const userRouter = Router();
  *          content:
  *              application/json:
  *                  schema:     
- *                      $ref: '#/components/schemas/RegisterUser'
+ *                      $ref: '#/schemas/RegisterUser'
  *      responses:
  *          201:
  *              description: User registered successfully
@@ -34,6 +34,9 @@ const userRouter = Router();
 //schema => describes the shape or structure of that JSON data
 userRouter
     .post('/register', userController.register);
+
+userRouter
+    .post('/login', userController.login);
 
 
 export default userRouter;

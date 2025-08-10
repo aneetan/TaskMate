@@ -1,6 +1,6 @@
 import { email } from "zod";
 import { BadRequestError } from "../errors/http.errors";
-import { UserAttributesDto } from "../models/types/user.types";
+import { UserAttributesDto, UserLoginDto } from "../models/types/user.types";
 import User from "../models/user.model";
 import userRepository from "../repository/user.repository";
 
@@ -23,6 +23,19 @@ class UserService {
         };
 
         return await userRepository.createUser(userData);
+    }
+
+    async loginUser(userDto: UserLoginDto): Promise<User> {
+        const loginData = {
+            email: userDto.email,
+            password: userDto.password
+        }
+
+        const user = await userRepository.findByEmailAndPassword(userDto.email, userDto.password);
+        if (!user) {
+            throw new BadRequestError("Invalid email or password");
+        }
+        return user;
     }
 }
 

@@ -1,5 +1,6 @@
 import { UserAttributes } from "../models/types/user.types";
 import User from "../models/user.model";
+import bcrypt from 'bcrypt';
 
 class UserRepository {
     async findByEmail(email:string): Promise<User | null> {
@@ -14,6 +15,22 @@ class UserRepository {
             email,
             password
         });
+    }
+
+    async findByEmailAndPassword(email:string, password:string): Promise<User | null> {
+        const user = await User.findOne({
+            where: { email },
+            attributes: {include: ['password'] }
+        });
+
+        if(!user) return null;
+
+        if(user){
+            const isPasswordValid = bcrypt.compareSync(password, user.password);
+            if(!isPasswordValid) return null;
+        }
+        
+        return user;
     }
 }
 
