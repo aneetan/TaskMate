@@ -1,7 +1,9 @@
 import { Router } from "express";
-import userController from "../controller/user.controller";
+import authController from "../controller/auth.controller";
 
-const userRouter = Router();
+const authRouter = Router();
+
+//schema => describes the shape or structure of that JSON data
 
 /**
  * @swagger
@@ -31,12 +33,11 @@ const userRouter = Router();
  *
  */
 
-//schema => describes the shape or structure of that JSON data
-userRouter
-    .post('/register', userController.register);
 
-userRouter
-    .post('/login', userController.login);
+authRouter.post('/register', authController.register);
+authRouter.post('/login', authController.login);
+authRouter.post('/refresh', authController.refresh);
+authRouter.post('/logout', authController.logout);
 
 
-export default userRouter;
+export default authRouter;
