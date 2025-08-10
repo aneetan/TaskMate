@@ -5,26 +5,31 @@ import './App.css';
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import UserLayout from "./components/layout/UserLayout";
+import { ProtectedRoute } from "./config/ProtectedRoutes";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
 
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
+      <AuthProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login/>} />
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
 
-          <Route element={<UserLayout/>}>
-              <Route path="dashboard" element={<Dashboard/>} />
-              <Route path="upcoming" element={<div>Upcoming</div>} />
-              <Route path="today" element={<div> Today </div>} />
-
+          <Route element={<ProtectedRoute/>}>
+            <Route element={<UserLayout/>}>
+                <Route path="dashboard" element={<Dashboard/>} />
+                <Route path="upcoming" element={<div>Upcoming</div>} />
+                <Route path="today" element={<div> Today </div>} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

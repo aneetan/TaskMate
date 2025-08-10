@@ -1,6 +1,8 @@
 import { useState } from "react";
 import TaskStatusFilter from "../components/TaskStatusFilter"
 import type { TaskProps } from "../types/Tasks";
+import { useAuth } from "../hooks/useAuth";
+import { Navigate } from "react-router";
 
 const Dashboard = () => {
   const [tasks, setTasks] = useState<TaskProps[]>([
@@ -8,7 +10,13 @@ const Dashboard = () => {
         { id: "2", title: "Project Proposal", category: "Work",  due_date: new Date("2025-08-02"), priority:"Low", status: "done" },
         { id: "3", title: "Go hiking to champadevi or jamacho", category: "Others", description: "Miscellaneous task information", due_date: new Date("2025-08-04"), priority:"Medium", status: "in-progress" },
         { id: "4", title: "Sleep peacefully", category: "Personal", due_date: new Date("2025-08-03"), priority:"High", status: "todo" },
-    ]);
+  ]);
+
+  const {isAuthenticated} = useAuth();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
   
   const todoTask = tasks.filter((item) => item.status === "todo");
   const inProgressTask = tasks.filter((item) => item.status === "in-progress");
