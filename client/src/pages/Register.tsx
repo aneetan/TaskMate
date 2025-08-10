@@ -1,16 +1,18 @@
-import axios from "axios";
+import { AxiosError, type AxiosResponse } from "axios";
 import type React from "react";
 import { useState, type FormEvent } from "react";
-import { API_URL } from "../config/url";
+import { useMutation } from "@tanstack/react-query";
+import { registerUser } from "../fetching/apiFetch";
+import { useNavigate } from "react-router";
 
 //form values
-interface RegisterProps {
+export interface RegisterProps {
     fullName: string;
     email: string;
     password: string;
     confirmPassword: string;
     checkbox: boolean;
-}
+}   
 
 //error msg
 interface ErrorProps {
@@ -29,9 +31,20 @@ const Register:React.FC = () => {
         confirmPassword: '',
         checkbox: false
     })
+    const navigate = useNavigate();
 
     const [error, setError] = useState<ErrorProps>({});
-    const [loading, setLoading] = useState<boolean>(false);
+
+    const mutation = useMutation<AxiosResponse, AxiosError, RegisterProps>({
+        mutationFn: registerUser, 
+        onSuccess: () => navigate('/login'),
+        onError: (err) => {
+            if(err.response){
+                console.log('Error response data:', err.response.status);
+                console.log('Error status:', err.response.status);
+            }
+        }
+    })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, type, value, checked } = e.target;
@@ -42,7 +55,7 @@ const Register:React.FC = () => {
         setError(prev => ({ ...prev, [name]: "" }));
     }
 
-    const validateForms = (): boolean => {
+    const validateForms = () => {
         const newErrors: ErrorProps = {};
 
         //full name validation
@@ -73,23 +86,8 @@ const Register:React.FC = () => {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        setLoading(true);
-
         if(!validateForms()) return;
-
-        axios.post(`${API_URL}/users/register`, formData)
-            .then(response => {
-                console.log("User created successfully", response.data)
-            })
-            .catch(error => {
-                if(error.response){
-                    console.log('Error response data:', error.response.data);
-                    console.log('Error status:', error.response.status);
-                }
-            })
-            .finally(() =>{
-                setLoading(false);
-            })
+        mutation.mutate(formData);
     }
 
     return (
@@ -198,11 +196,11 @@ const Register:React.FC = () => {
                             </div>
                             <button
                                 type="submit"
-                                disabled={loading}
+                                disabled={mutation.isPending}
                                 className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[var(--primary-color)]
-                                  hover:bg-[var(--primary-color-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)] transition ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                                  hover:bg-[var(--primary-color-hover)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)] transition ${mutation.isPending ? 'opacity-70 cursor-not-allowed' : ''}`}
                             >
-                                {loading ? (
+                                {mutation.isPending ? (
                                     <>
                                         <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>

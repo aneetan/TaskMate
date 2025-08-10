@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router";
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import Login from "./pages/Login";
 import './App.css';
 import Register from "./pages/Register";
@@ -7,21 +8,24 @@ import UserLayout from "./components/layout/UserLayout";
 
 function App() {
 
+  const queryClient = new QueryClient();
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login/>} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/register" element={<Register/>} />
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login/>} />
+          <Route path="/login" element={<Login/>} />
+          <Route path="/register" element={<Register/>} />
 
-        <Route element={<UserLayout/>}>
-            <Route path="dashboard" element={<Dashboard/>} />
-            <Route path="upcoming" element={<div>Upcoming</div>} />
-            <Route path="today" element={<div> Today </div>} />
+          <Route element={<UserLayout/>}>
+              <Route path="dashboard" element={<Dashboard/>} />
+              <Route path="upcoming" element={<div>Upcoming</div>} />
+              <Route path="today" element={<div> Today </div>} />
 
-        </Route>
-      </Routes>
-    </BrowserRouter>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
 

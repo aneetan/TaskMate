@@ -22,7 +22,7 @@ app.use(express.json());
 connectToDatabase()
     .then(() => {
         //routes
-        app.use('/api/users', authRouter);
+        app.use('/api/auth', authRouter);
 
         app.listen(PORT, () => console.log(`Server started at http://localhost:${PORT}`))  
     })
