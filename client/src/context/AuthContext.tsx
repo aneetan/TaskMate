@@ -1,6 +1,6 @@
 import { createContext, useState, type ReactNode } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { refreshTokenAPI } from "../fetching/apiFetch";
+import { refreshTokenAPI } from "../api/userApi";
 
 interface AuthContextProps {
    token: string | null;

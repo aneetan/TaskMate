@@ -2,7 +2,7 @@ import { AxiosError, type AxiosResponse } from "axios";
 import type React from "react";
 import { useState, type FormEvent } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { registerUser } from "../fetching/apiFetch";
+import { registerUser } from "../api/userApi";
 import { useNavigate } from "react-router";  
 import type { RegisterProps } from "../types/auth";
 

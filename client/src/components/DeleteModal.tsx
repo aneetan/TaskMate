@@ -1,4 +1,8 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { TaskProps } from "../types/Tasks";
+import { AxiosError, type AxiosResponse } from "axios";
+import { deleteTask } from "../api/taskApi";
+import { showErrorToast, showSuccessToast } from "../utils/toastify";
 
 interface DeleteTaskProps {
   isOpen: boolean;
@@ -7,9 +11,21 @@ interface DeleteTaskProps {
 }
 
 const DeleteModal = ({ isOpen, onClose, task }: DeleteTaskProps) => {
-  if (!isOpen || !task) return null;
+  const queryClient = useQueryClient();
+  
+  const mutation = useMutation<AxiosResponse, AxiosError, number>({
+    mutationFn: (taskId) => deleteTask(taskId),
+    onSuccess: () => {
+      showSuccessToast("Task Deleted Successfully");
+      queryClient.invalidateQueries({ queryKey: ['task'] });
+    },
+    onError: () => showErrorToast("Something went wrong")
+  });
 
-  const handleDelete = () => {
+    if (!isOpen || !task) return null;
+
+  const handleDelete = (taskId: number) => {
+    mutation.mutate(taskId)
     onClose();
   };
 
@@ -30,7 +46,7 @@ const DeleteModal = ({ isOpen, onClose, task }: DeleteTaskProps) => {
             Cancel
           </button>
           <button
-            onClick={handleDelete}
+            onClick={() => handleDelete(task.id!)}
             className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors"
           >
             Delete

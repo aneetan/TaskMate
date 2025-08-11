@@ -10,8 +10,10 @@ class TaskRepository {
       })
    }
 
-   async getTasks(): Promise<Task[]> {
-      return await Task.findAll();
+   async getTasks(userId: number): Promise<Task[]> {
+      return await Task.findAll({
+         where: {userId}
+      });
    }
 
    async editTask(id: number, updates: Partial<TaskAttributes>): Promise<Task | null> {

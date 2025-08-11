@@ -3,7 +3,7 @@ export type Priority = "high" | "low" | "medium";
 export type Status = "todo"| "in-progress" | "done";
 
 export interface TaskProps {
-  id: string;
+  id: number | null;
   title: string;
   category: Category | null;
   priority: Priority | null;
@@ -12,3 +12,5 @@ export interface TaskProps {
   due_date : Date | null;
   userId: number | null;
 }
+
+type TaskFormState = Omit<TaskProps, 'id'> & { id?: number | null };

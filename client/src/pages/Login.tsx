@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useState, type FormEvent } from "react"
-import { loginUser } from "../fetching/apiFetch";
+import { loginUser } from "../api/userApi";
 import type { AxiosError } from "axios";
 import { useNavigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";

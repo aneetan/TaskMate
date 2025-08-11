@@ -4,10 +4,7 @@ import { RiArrowDropDownLine } from 'react-icons/ri';
 import { type Priority, type Category, type TaskProps, type Status } from '../types/Tasks';
 import moment from 'moment';
 import { getUserId } from '../utils/jwtDecode';
-import { useMutation } from '@tanstack/react-query';
-import { AxiosError, type AxiosResponse } from 'axios';
-import { addTask } from '../fetching/apiFetch';
-import { showErrorToast, showSuccessToast } from '../utils/toastify';
+import { useTaskMutation } from '../hooks/useTaskMutation';
 
 interface AddTaskModalProps {
   isOpen: boolean;
@@ -19,7 +16,7 @@ interface AddTaskModalProps {
 
 export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: initialStatus }: AddTaskModalProps) => {
   const [formData, setFormData] = useState<TaskProps>({
-    id: '',
+    id: null,
     title: '', 
     description: '',
     category: 'personal',
@@ -40,27 +37,12 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
     }))
   }
 
-  const mutation = useMutation<AxiosResponse, AxiosError, TaskProps>({
-    mutationFn: addTask,
-    onSuccess: () => showSuccessToast("Task Added Successfully"),
-    onError: (err) => {
-      if(err.response){
-        console.log('Error response data', err.response)
-      }
-      showErrorToast("Something went wrong");
-    }
-  })
+  const mutation = useTaskMutation(isEdit); 
 
   useEffect(() => {
     if(isEdit && taskToEdit){
         setFormData({
-            id: taskToEdit.id,
-            title: taskToEdit.title,
-            description: taskToEdit.description,
-            status: taskToEdit.status,
-            priority: taskToEdit.priority,
-            due_date: taskToEdit.due_date,
-            category: taskToEdit.category,
+            ... taskToEdit,
             userId: getUserId()!
         })
     } else {
@@ -70,14 +52,14 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
 
   const resetForm = () => {
     setFormData({
-        id: '',
+        id: null,
         title: '', 
         description: '',
         category: "personal",
         priority: "medium",
         due_date: null,
         status: initialStatus,
-        userId: getUserId()!
+        userId: null
     })
   }
 
@@ -86,7 +68,11 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
 
     if (!formData.title.trim() || !formData.due_date) return;
 
-    mutation.mutate(formData);
+    if (isEdit) {
+      mutation.mutate({ taskId: formData.id!, formData});
+    } else {
+      mutation.mutate(formData);
+    }
     
     onClose();
     resetForm();

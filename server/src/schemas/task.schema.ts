@@ -37,7 +37,7 @@ import { z } from "zod";
  *           type: integer
  */
 
-export const addTasksSchema = z.object({
+export const addTaskSchema = z.object({
     body: z.object({
         title: z.string()
             .min(5, "Title must be min 5 characters")
@@ -52,4 +52,9 @@ export const addTasksSchema = z.object({
     })
 });
 
-export type AddTaskUserInput = z.infer<typeof addTasksSchema>;
+export const editTaskSchema = addTaskSchema.extend({
+  body: addTaskSchema.shape.body.partial()
+});
+
+export type AddTaskUserInput = z.infer<typeof addTaskSchema>;
+export type EditTaskUserInput = z.infer<typeof editTaskSchema>;

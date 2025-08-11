@@ -1,17 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 import { validateSchema } from "../middleware/validate.middleware";
-import { addTasksSchema, AddTaskUserInput } from "../schemas/task.schema";
 import { verifyAccessToken } from "../middleware/auth.middleware";
 import taskRepository from "../repository/task.repository";
 import dotenv from "dotenv";
 import { errorResponse } from "../helpers/errorMessage";
 import { TaskAttributes } from "../types/task.types";
+import { addTaskSchema, AddTaskUserInput, editTaskSchema } from "../schemas/task.schema";
 
 dotenv.config();
 
 class TaskController {
    addTask = [
-      validateSchema(addTasksSchema),
+      validateSchema(addTaskSchema),
       verifyAccessToken,
       async(req: Request<{}, {}, AddTaskUserInput['body']>, res: Response, next: NextFunction) => {
          try{
@@ -39,9 +39,10 @@ class TaskController {
 
    getTasks = [
       verifyAccessToken,
-      async (req: Request, res: Response, next: NextFunction){
+      async (req: Request, res: Response, next: NextFunction) => {
          try{
-            const tasks: TaskAttributes[] = await taskRepository.getTasks();
+            const userId = Number(req.params.userId);
+            const tasks: TaskAttributes[] = await taskRepository.getTasks(userId);
             res.status(200).json(tasks);
          } catch (e) {
             errorResponse(e, res, "Error while retrieving tasks"); 
@@ -51,7 +52,7 @@ class TaskController {
    ]
 
    editTask = [
-      validateSchema,
+      validateSchema(editTaskSchema),
       verifyAccessToken,
       async(req: Request<{ id: string }, {}, Partial<TaskAttributes>>, res: Response, next: NextFunction) => {
          try {
