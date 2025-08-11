@@ -24,27 +24,21 @@ import { object, z } from "zod";
  *           minLength: 8
  *         confirmPassword:
  *           type: string
- * RegisterUser:
+ *           minLength: 8
+ *     LoginUser:
  *       type: object
  *       required:
- *         - fullName
  *         - email
  *         - password
- *         - confirmPassword
  *       properties:
- *         fullName:
- *           type: string
- *           minLength: 5
- *           maxLength: 100
  *         email:
  *           type: string
  *           format: email
  *         password:
  *           type: string
  *           minLength: 8
- *         confirmPassword:
- *           type: string           
  */
+
 export const registerUserSchema = z.object({
     body: z.object({
         fullName: z.string()

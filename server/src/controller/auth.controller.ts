@@ -118,7 +118,7 @@ class AuthController {
 
         res
         .cookie("refreshToken", newRefreshToken, { httpOnly: true, secure: true, sameSite: "strict" })
-        .json({ accessToken: newAccessToken });
+        .json({ accessToken: newAccessToken, id: user.id });
     }
 
     logout = [

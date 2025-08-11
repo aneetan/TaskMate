@@ -1,4 +1,4 @@
-import z from "zod";
+import { z } from "zod";
 
 /**
  * @swagger
@@ -20,11 +20,21 @@ import z from "zod";
  *           maxLength: 100
  *         description:
  *           type: string
+ *           nullable: true
  *         priority:
  *           type: string
- *           minLength: 8
- *         confirmPassword:
- *           type: string          
+ *           enum: [high, medium, low]
+ *         status:
+ *           type: string
+ *           enum: [todo, in-progress, done]
+ *         category:
+ *           type: string
+ *           enum: [personal, work, college, others]
+ *         due_date:
+ *           type: string
+ *           format: date-time
+ *         userId:
+ *           type: integer
  */
 
 export const AddTasksSchema = z.object({
@@ -32,15 +42,14 @@ export const AddTasksSchema = z.object({
         title: z.string()
             .min(5, "Title must be min 5 characters")
             .max(100, "Title cannot exceed 100 characters"),
-        description: z.string()
-            .nullable(),
+        description: z.string().nullable(),
         priority: z.enum(["high", "medium", "low"]),
         status: z.enum(["todo", "in-progress", "done"]),
         category: z.enum(["personal", "work", "college", "others"]),
-        due_date: z.date()
+        due_date: z.coerce.date()
             .min(new Date(), "Due date cannot be past date"),
-        userId: z.int(),  
+        userId: z.number().int(),  
     })
-})
+});
 
-export type AddTask = z.infer <typeof AddTasksSchema>
+export type AddTask = z.infer<typeof AddTasksSchema>;
