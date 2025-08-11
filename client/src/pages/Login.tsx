@@ -4,11 +4,7 @@ import { loginUser } from "../fetching/apiFetch";
 import type { AxiosError } from "axios";
 import { useNavigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";
-
-export interface LoginProps {
-    email: string;
-    password: string;
-}
+import type { LoginProps } from "../types/auth";
 
  const Login: React.FC = () => {
     const [formData, setFormData] = useState<LoginProps>({
@@ -17,7 +13,7 @@ export interface LoginProps {
     });
     const [error, setError] = useState<string>('');
     const navigate = useNavigate();
-    const {token, login} = useAuth();
+    const {login} = useAuth();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({...formData, [e.target.name]: e.target.value});
@@ -27,7 +23,7 @@ export interface LoginProps {
     const mutation = useMutation({
         mutationFn: loginUser,
         onSuccess: (data) => {
-            login(data.accessToken);
+            login(data.accessToken, data.id);
             navigate("/dashboard");
         },
         onError: (error: AxiosError) => {

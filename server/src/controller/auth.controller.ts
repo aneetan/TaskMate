@@ -83,7 +83,7 @@ class AuthController {
                 res
                     .status(200)
                     .cookie("refreshToken", refreshToken, {httpOnly: true, secure: true, sameSite: "strict"})
-                    .json({"message": "User logged in successfully", accessToken});  
+                    .json({"message": "User logged in successfully", accessToken, id: user.id});  
             } catch (e) {
                 res.status(400).json({"message": "Invalid email or password"});  
                 next(e);

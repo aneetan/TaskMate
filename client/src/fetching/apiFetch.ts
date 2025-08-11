@@ -1,13 +1,6 @@
 import axios, { type AxiosResponse } from "axios";
 import { API_URL } from "../config/url";
-import type { RegisterProps } from "../pages/Register";
-import type { LoginProps } from "../pages/Login";
-
-
-interface LoginResponse {
-    accessToken: string;
-    message: string;
-}
+import type { LoginProps, LoginResponse, RegisterProps } from "../types/auth";
 
 export const registerUser = async (formData: RegisterProps): Promise<AxiosResponse> => {
   const response = await axios.post(`${API_URL}/auth/register`, formData);

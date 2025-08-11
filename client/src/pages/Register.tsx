@@ -3,16 +3,8 @@ import type React from "react";
 import { useState, type FormEvent } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { registerUser } from "../fetching/apiFetch";
-import { useNavigate } from "react-router";
-
-//form values
-export interface RegisterProps {
-    fullName: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-    checkbox: boolean;
-}   
+import { useNavigate } from "react-router";  
+import type { RegisterProps } from "../types/auth";
 
 //error msg
 interface ErrorProps {
