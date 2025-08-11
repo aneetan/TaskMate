@@ -7,12 +7,25 @@ import Dashboard from "./pages/Dashboard";
 import UserLayout from "./components/layout/UserLayout";
 import { ProtectedRoute } from "./config/ProtectedRoutes";
 import { AuthProvider } from "./context/AuthContext";
+import { ToastContainer } from "react-toastify";
 
 function App() {
 
   const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
+      <ToastContainer
+      position="top-center"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick={false}
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="light"
+      />
       <AuthProvider>
       <BrowserRouter>
         <Routes>

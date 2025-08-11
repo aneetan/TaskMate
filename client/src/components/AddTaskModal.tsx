@@ -7,6 +7,7 @@ import { getUserId } from '../utils/jwtDecode';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError, type AxiosResponse } from 'axios';
 import { addTask } from '../fetching/apiFetch';
+import { showErrorToast, showSuccessToast } from '../utils/toastify';
 
 interface AddTaskModalProps {
   isOpen: boolean;
@@ -41,11 +42,12 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
 
   const mutation = useMutation<AxiosResponse, AxiosError, TaskProps>({
     mutationFn: addTask,
-    onSuccess: () => console.log("Task added"),
+    onSuccess: () => showSuccessToast("Task Added Successfully"),
     onError: (err) => {
       if(err.response){
         console.log('Error response data', err.response)
       }
+      showErrorToast("Something went wrong");
     }
   })
 
