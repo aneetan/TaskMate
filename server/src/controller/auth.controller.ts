@@ -8,6 +8,7 @@ import { verifyAccessToken } from "../middleware/auth.middleware";
 import { redis } from "../app";
 import { JwtPayload } from "@supabase/supabase-js";
 import { generateJwtToken, ONE_WEEK_SECONDS } from "../utils/jwtToken";
+import { errorResponse } from "../helpers/errorMessage";
 
 
 class AuthController {
@@ -43,8 +44,7 @@ class AuthController {
                 res.status(201).json(userWithoutPassword);
 
             } catch (e){
-                const errorMessage = e instanceof Error ? e.message : 'Error while registering user';
-                res.status(400).json({"message": errorMessage});  
+                errorResponse(e, res, "Error while registering user");
                 next(e);
             }
         }
@@ -72,7 +72,7 @@ class AuthController {
                     .cookie("refreshToken", refreshToken, {httpOnly: true, secure: true, sameSite: "strict"})
                     .json({"message": "User logged in successfully", accessToken, id: user.id});  
             } catch (e) {
-                res.status(400).json({"message": "Invalid email or password"});  
+                errorResponse(e, res, "Invalid email or password");
                 next(e);
             }
         }
