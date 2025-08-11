@@ -1,10 +1,10 @@
 import { DataTypes, InitOptions, Model, ModelAttributes } from "sequelize";
-import { Category, Priority, Status, TaskAttributes } from "./types/task.types";
+import { Category, Priority, Status, TaskAttributes } from "../types/task.types";
 
-class Task extends Model<TaskAttributes> implements TaskAttributes{
+class Task extends Model<TaskAttributes, Omit<TaskAttributes, 'id'>> implements TaskAttributes{
     public id !: number;
     public title !: string;
-    public description?: string | undefined;
+    public description?: string | null;
     public priority !: Priority;
     public category !: Category;
     public status !: Status;
@@ -55,7 +55,7 @@ class Task extends Model<TaskAttributes> implements TaskAttributes{
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
-                    model: "users", //table name of users model
+                    model: "users",
                     key: "id"
                 }
             }

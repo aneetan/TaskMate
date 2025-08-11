@@ -5,6 +5,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerSpec from './config/swagger';
 import Redis from 'ioredis';
 import authRouter from './routes/auth.route';
+import taskRouter from './routes/task.route';
 
 require('dotenv').config();
 export const redis = new Redis(process.env.REDIS_URL!);
@@ -23,6 +24,7 @@ connectToDatabase()
     .then(() => {
         //routes
         app.use('/api/auth', authRouter);
+        app.use('/api/task', taskRouter);
 
         app.listen(PORT, () => console.log(`Server started at http://localhost:${PORT}`))  
     })

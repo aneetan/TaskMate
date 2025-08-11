@@ -19,11 +19,13 @@ export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
    const queryClient = useQueryClient();
 
    const login = (newToken: string, newUserId: number) => {
+      localStorage.setItem("token", newToken);
       setToken(newToken);
       setUserId(newUserId);
    }
 
    const logout = () => {
+      localStorage.removeItem("token");
       setToken(null);
       setUserId(null);
    }
@@ -33,6 +35,7 @@ export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
    const refreshTokenMutation = useMutation({
       mutationFn: refreshTokenAPI,
       onSuccess: (newAccessToken) => {
+         localStorage.setItem("token", newAccessToken);
          setToken(newAccessToken);
          
          // Invalidate any queries that depend on user

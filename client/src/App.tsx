@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import Login from "./pages/Login";
 import './App.css';
@@ -27,6 +27,8 @@ function App() {
                 <Route path="today" element={<div> Today </div>} />
             </Route>
           </Route>
+
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
       </AuthProvider>

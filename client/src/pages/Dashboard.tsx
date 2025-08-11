@@ -27,7 +27,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="rounded-lg shadow p-6 inset-0 bg-opacity-50 backdrop-blur-sm z-40">
+    <div className="rounded-lg shadow p-6 inset-0 bg-opacity-50 backdrop-blur-sm z-40 h-screen">
         <h1 className="text-2xl font-bold mb-4"> Dashboard </h1>
         <div className="flex md:flex-row flex-col justify-between">
           <div className="w-full md:w-1/3">

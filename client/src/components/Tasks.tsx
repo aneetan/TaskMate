@@ -22,7 +22,7 @@ const Tasks = ({data} : {data: TaskProps[]}) => {
             key={task.id}
         >
             {/* ---------- Task Header --------- */}
-            <div className="flex items-start justify-between mb-2">
+            <div className="flex items-start justify-between mb-2 w-full">
                 <div className="flex items-start gap-2">
                     {task.status === "todo" ? (
                         <MdOutlineTimer className="w-5 mt-1 h-5 text-gray-600"/>
@@ -33,7 +33,7 @@ const Tasks = ({data} : {data: TaskProps[]}) => {
                     )}
 
                     <span
-                        className="font-semibold text-base truncate md:w-[180px] w-[80px] cursor-pointer hover:underline"
+                        className="font-semibold text-base truncate lg:w-[200px] md:w-[60px] w-[80px] cursor-pointer hover:underline"
                         onClick={() => setViewModalOpen(true)}
                     > {task.title} </span>
                 </div>
@@ -44,7 +44,6 @@ const Tasks = ({data} : {data: TaskProps[]}) => {
                 task={task}
                 />
 
-                <div className="">
                     {/* -------- Priority --------- */}
                     <div className={`rounded-4xl px-2 py-1 text-xs text-white w-fit ml-2
                         ${task.priority === "High" ? "bg-red-500" :
@@ -53,7 +52,6 @@ const Tasks = ({data} : {data: TaskProps[]}) => {
                         }`}>
                         {task.priority}
                     </div>
-                </div>
             </div>
             <div className="flex flex-col ml-6">
                 <span className="rounded-4xl px-3 py-1 text-xs text-white w-fit bg-purple-500">

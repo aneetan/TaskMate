@@ -4,10 +4,10 @@ import { LoginUserInput, loginUserSchema, RegisterUserInput, registerUserSchema 
 import userRepository from "../repository/user.repository";
 import { BadRequestError } from "../errors/http.errors";
 import jwt  from "jsonwebtoken";
-import Redis from "ioredis";
 import { verifyAccessToken } from "../middleware/auth.middleware";
 import { redis } from "../app";
 import { JwtPayload } from "@supabase/supabase-js";
+import { generateJwtToken, ONE_WEEK_SECONDS } from "../utils/jwtToken";
 
 
 class AuthController {
@@ -56,30 +56,17 @@ class AuthController {
         async(req:Request<{}, {}, LoginUserInput['body']>, res: Response, next: NextFunction) => {
             try{
                 const {email, password} = req.body;
-        
-                const user = await userRepository.findByEmailAndPassword(email, password);
 
+                const user = await userRepository.findByEmailAndPassword(email, password);
                 if (!user) {
                     return res.status(401).json({error : "Authentication failed"});
                 }
 
-                //JWT- token generation 
-                const accessToken = jwt.sign(
-                    { user},
-                    process.env.JSON_SECRET_KEY!,
-                    { expiresIn: '1h'}
-                );
-
-                //Refresh Token
-                const refreshToken = jwt.sign(
-                    {user},
-                    process.env.JSON_SECRET_KEY!,
-                    {expiresIn: '7d'}
-                );
+                const accessToken = generateJwtToken({user}, '1h');
+                const refreshToken = generateJwtToken({user}, '7d');
                 
                 //store refresh token in redis
-                await redis.set(`refresh:${user.id}`, refreshToken, "EX", 60 * 60 * 24 * 7); 
-
+                await redis.set(`refreshToken:${user.id}`, refreshToken, "EX", ONE_WEEK_SECONDS); 
                 res
                     .status(200)
                     .cookie("refreshToken", refreshToken, {httpOnly: true, secure: true, sameSite: "strict"})
@@ -93,32 +80,23 @@ class AuthController {
 
     refresh = async(req: Request, res: Response, next: NextFunction) => {
         const refreshToken = req.cookies.refreshToken;
-
         if(!refreshToken) return res.status(401).json({ error: "No refresh token" });
         
         const user = req.body;
-        const storedToken = await redis.get(`refresh:${user.id}`);
-
+        const storedToken = await redis.get(`refreshToken:${user.id}`);
         if (storedToken !== refreshToken) return res.status(403).json({ error: "Invalid refresh token" });
 
-        const newAccessToken = jwt.sign(
-            { user , jti: user.id },
-            process.env.JWT_SECRET_KEY!,
-            { expiresIn: "15m" }
-        );
-
-        const newRefreshToken = jwt.sign(
-            { user },
-            process.env.JWT_SECRET_KEY!,
-            { expiresIn: "15m" }
-        );
+        const newAccessToken = generateJwtToken({user, jti: user.id}, "1h");
+        const newRefreshToken = generateJwtToken({user}, "7d");
 
         // Update redis
-        await redis.set(`refresh:${user.id}`, newRefreshToken, "EX", 60 * 60 * 24 * 7);
+        await redis.set(`refresh:${user.id}`, newRefreshToken, "EX", ONE_WEEK_SECONDS);
 
         res
         .cookie("refreshToken", newRefreshToken, { httpOnly: true, secure: true, sameSite: "strict" })
         .json({ accessToken: newAccessToken, id: user.id });
+        
+        next();
     }
 
     logout = [
@@ -129,7 +107,7 @@ class AuthController {
             const decoded = jwt.decode(token!) as JwtPayload;
 
             // 1. Delete refresh Token
-            await redis.del(`refresh:${userId}`);
+            await redis.del(`refreshToken:${userId}`);
 
             // 2. Blacklist access token
             const expInSeconds = decoded?.exp -Math.floor(Date.now() / 1000);
@@ -137,7 +115,7 @@ class AuthController {
                 await redis.set(`blacklist:${decoded.jti}`, "true", "EX", expInSeconds);
             }
 
-            // 3. clear Cookie
+            // 3. Clear Cookie
             res.clearCookie("refreshToken").json({ message: "Logged out" });
         }
     ]

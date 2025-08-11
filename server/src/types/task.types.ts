@@ -6,7 +6,7 @@ export type Category = "personal" | "work" | "college" | "others"
 export interface TaskAttributes {
     id: number;
     title: string;
-    description ?: string;
+    description ?: string | null;
     category: Category;
     priority: Priority;
     status: Status;

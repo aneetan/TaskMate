@@ -1,5 +1,5 @@
-export type Category = "Personal" | "Work" | "College" | "Others";
-export type Priority = "High" | "Low" | "Medium";
+export type Category = "personal" | "work" | "college" | "others";
+export type Priority = "high" | "low" | "medium";
 export type Status = "todo"| "in-progress" | "done";
 
 export interface TaskProps {
@@ -10,4 +10,5 @@ export interface TaskProps {
   status: Status;
   description ?: string;
   due_date : Date | null;
+  userId: number | null;
 }

@@ -37,7 +37,7 @@ import { z } from "zod";
  *           type: integer
  */
 
-export const AddTasksSchema = z.object({
+export const addTasksSchema = z.object({
     body: z.object({
         title: z.string()
             .min(5, "Title must be min 5 characters")
@@ -48,8 +48,8 @@ export const AddTasksSchema = z.object({
         category: z.enum(["personal", "work", "college", "others"]),
         due_date: z.coerce.date()
             .min(new Date(), "Due date cannot be past date"),
-        userId: z.number().int(),  
+        userId: z.number().int().positive(),  
     })
 });
 
-export type AddTask = z.infer<typeof AddTasksSchema>;
+export type AddTaskUserInput = z.infer<typeof addTasksSchema>;

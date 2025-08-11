@@ -3,6 +3,10 @@ import { IoClose } from 'react-icons/io5';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 import { type Priority, type Category, type TaskProps, type Status } from '../types/Tasks';
 import moment from 'moment';
+import { getUserId } from '../utils/jwtDecode';
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError, type AxiosResponse } from 'axios';
+import { addTask } from '../fetching/apiFetch';
 
 interface AddTaskModalProps {
   isOpen: boolean;
@@ -17,10 +21,11 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
     id: '',
     title: '', 
     description: '',
-    category: 'Personal',
-    priority: 'Medium',
+    category: 'personal',
+    priority: 'medium',
     due_date: null,
-    status: initialStatus
+    status: initialStatus,
+    userId: null
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -34,6 +39,16 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
     }))
   }
 
+  const mutation = useMutation<AxiosResponse, AxiosError, TaskProps>({
+    mutationFn: addTask,
+    onSuccess: () => console.log("Task added"),
+    onError: (err) => {
+      if(err.response){
+        console.log('Error response data', err.response)
+      }
+    }
+  })
+
   useEffect(() => {
     if(isEdit && taskToEdit){
         setFormData({
@@ -43,7 +58,8 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
             status: taskToEdit.status,
             priority: taskToEdit.priority,
             due_date: taskToEdit.due_date,
-            category: taskToEdit.category
+            category: taskToEdit.category,
+            userId: getUserId()!
         })
     } else {
         resetForm();
@@ -55,10 +71,11 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
         id: '',
         title: '', 
         description: '',
-        category: "Personal",
-        priority: "Medium",
+        category: "personal",
+        priority: "medium",
         due_date: null,
-        status: initialStatus
+        status: initialStatus,
+        userId: getUserId()!
     })
   }
 
@@ -67,17 +84,8 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
 
     if (!formData.title.trim() || !formData.due_date) return;
 
-    const task = {
-        id: Date.now().toString(),
-        title: formData.title.trim(),
-        description : (formData.description ?? '').trim(),
-        priority: formData.priority,
-        category: formData.category,
-        due_date: new Date(formData.due_date),
-        status: formData.status
-    }
-    console.log(task);
-
+    mutation.mutate(formData);
+    
     onClose();
     resetForm();
   };
@@ -86,7 +94,7 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
 
   return (
     <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 w-full md:max-w-[60%] max-w-md md: m-0 m-4">
+      <div className="bg-white rounded-xl p-6 w-full md:max-w-[60%] max-w-md md:m-0 m-4">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold"> 
             {isEdit ? 'Edit Task' : 'Add New Task'}
@@ -185,7 +193,7 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
                     onChange={handleChange}
                     className="block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 appearance-none"
                 >
-                    {['Low', 'Medium', 'High'].map((level) => (
+                    {['low', 'medium', 'high'].map((level) => (
                     <option key={level} value={level}>
                         {level}
                     </option>
@@ -206,7 +214,7 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
                     onChange={handleChange}
                     className="block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 appearance-none"
                 >
-                    {['Personal', 'Work', 'College', 'Others'].map((level) => (
+                    {['personal', 'work', 'college', 'others'].map((level) => (
                     <option key={level} value={level}>
                         {level}
                     </option>

@@ -1,4 +1,4 @@
-import { UserAttributes } from "../models/types/user.types";
+import { UserAttributes } from "../types/user.types";
 import User from "../models/user.model";
 import bcrypt from 'bcrypt';
 
