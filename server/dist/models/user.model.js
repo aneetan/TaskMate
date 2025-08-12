@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 class User extends sequelize_1.Model {
     static initialize(sequelize) {
         const attributes = {
@@ -32,7 +32,7 @@ class User extends sequelize_1.Model {
                 type: sequelize_1.DataTypes.STRING,
                 allowNull: false,
                 set(value) {
-                    const hashed = bcrypt_1.default.hashSync(value, 10);
+                    const hashed = bcryptjs_1.default.hashSync(value, 10);
                     this.setDataValue('password', hashed);
                 }
             }

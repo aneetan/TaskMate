@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_model_1 = __importDefault(require("../models/user.model"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 class UserRepository {
     findByEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -39,7 +39,7 @@ class UserRepository {
             if (!user)
                 return null;
             if (user) {
-                const isPasswordValid = bcrypt_1.default.compareSync(password, user.password);
+                const isPasswordValid = bcryptjs_1.default.compareSync(password, user.password);
                 if (!isPasswordValid)
                     return null;
             }
