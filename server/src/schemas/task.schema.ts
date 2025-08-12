@@ -36,6 +36,12 @@ import { getStartOfToday } from "../utils/dateUtilsSchema";
  *           format: date-time
  *         userId:
  *           type: integer
+ *     EditTask:
+ *       type: object
+ *       allOf: 
+ *         - $ref: '#/components/schemas/AddTask'
+ *       required:
+ *         - id
  */
 
 export const addTaskSchema = z.object({
