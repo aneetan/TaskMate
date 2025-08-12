@@ -1,6 +1,4 @@
 import TaskStatusFilter from "../components/TaskStatusFilter"
-import { useAuth } from "../hooks/useAuth";
-import { Navigate } from "react-router";
 import {  useQuery } from "@tanstack/react-query";
 import { AxiosError, type AxiosResponse } from "axios";
 import { viewTasks } from "../api/taskApi";
