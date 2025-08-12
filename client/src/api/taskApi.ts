@@ -13,7 +13,7 @@ export const addTask = async (formData: TaskProps): Promise<AxiosResponse> => {
     throw Error("Invalid authorization");
   }
   
-  const response = await axios.post(`${API_URL}/task/add-task`, formData, {
+  const response = await axios.post(`${API_URL}/api/task/add-task`, formData, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -23,7 +23,7 @@ export const addTask = async (formData: TaskProps): Promise<AxiosResponse> => {
 }
 
 export const viewTasks = async (userId: number): Promise<AxiosResponse> => {
-  const response = await axios.get(`${API_URL}/task/${userId}`, {
+  const response = await axios.get(`${API_URL}/api/task/${userId}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
     }
@@ -33,7 +33,7 @@ export const viewTasks = async (userId: number): Promise<AxiosResponse> => {
 }
 
 export const editTask = async (formData: Partial<TaskProps>, taskId: number): Promise<AxiosResponse> => {
-  const response = await axios.put(`${API_URL}/task/edit-task/${taskId}`, formData, {
+  const response = await axios.put(`${API_URL}/api/task/edit-task/${taskId}`, formData, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
     }
@@ -42,7 +42,7 @@ export const editTask = async (formData: Partial<TaskProps>, taskId: number): Pr
 }
 
 export const deleteTask = async (taskId: number): Promise<AxiosResponse> => {
-  const response = await axios.delete(`${API_URL}/task/delete-task/${taskId}`, {
+  const response = await axios.delete(`${API_URL}/api/task/delete-task/${taskId}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
     }
