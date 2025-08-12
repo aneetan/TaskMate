@@ -1,6 +1,6 @@
 import { UserAttributes } from "../types/user.types";
 import User from "../models/user.model";
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 class UserRepository {
     async findByEmail(email:string): Promise<User | null> {

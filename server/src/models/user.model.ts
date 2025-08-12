@@ -1,6 +1,6 @@
 import { DataTypes, InitOptions, Model, ModelAttributes } from "sequelize";
 import { UserAttributes } from "../types/user.types";
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 class User extends  Model<UserAttributes, Omit<UserAttributes, 'id'>> implements UserAttributes {
     public id!: number;

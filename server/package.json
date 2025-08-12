@@ -4,13 +4,11 @@
   "description": "",
   "main": "dist/app.js",
   "scripts": {
-    "build": "tsc && npm run copy-files",
-    "copy-files": "",
+    "build": "tsc",
     "start": "node dist/app.js",
     "dev": "nodemon src/app.ts",
     "test": "jest --passWithNoTests",
-    "prebuild": "rimraf dist",
-    "postinstall": "npm run build"
+    "postinstall": "npm rebuild bcrypt --update-binary"
   },
   "keywords": [],
   "author": "",
@@ -33,7 +31,6 @@
     "zod": "^4.0.14"
   },
   "devDependencies": {
-    "@types/bcrypt": "^6.0.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/ioredis": "^4.28.10",
