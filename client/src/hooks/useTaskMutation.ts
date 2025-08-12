@@ -22,6 +22,7 @@ export function useTaskMutation(isEdit: boolean) {
          queryClient.invalidateQueries({ queryKey: ['task'] });
       },
       onError: (err) => {
+         console.log(err)
          if(err.response){
             console.log('Error response data', err.response)
          }

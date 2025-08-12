@@ -8,6 +8,8 @@ import UserLayout from "./components/layout/UserLayout";
 import { ProtectedRoute } from "./config/ProtectedRoutes";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastContainer } from "react-toastify";
+import Upcoming from "./pages/Upcoming";
+import Today from "./pages/Today";
 
 function App() {
 
@@ -36,8 +38,8 @@ function App() {
           <Route element={<ProtectedRoute/>}>
             <Route element={<UserLayout/>}>
                 <Route path="dashboard" element={<Dashboard/>} />
-                <Route path="upcoming" element={<div>Upcoming</div>} />
-                <Route path="today" element={<div> Today </div>} />
+                <Route path="upcoming" element={<Upcoming/>} />
+                <Route path="today" element={<Today/>} />
             </Route>
           </Route>
 

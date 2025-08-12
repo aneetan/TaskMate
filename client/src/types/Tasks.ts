@@ -12,5 +12,3 @@ export interface TaskProps {
   due_date : Date | null;
   userId: number | null;
 }
-
-type TaskFormState = Omit<TaskProps, 'id'> & { id?: number | null };

@@ -20,11 +20,11 @@ const ViewTask = ({ isOpen, onClose, task }: ViewTaskProps) => {
 
   const getPriorityColor = (priority: Priority | null) => {
     switch (priority) {
-      case "High":
+      case "high":
         return "bg-red-100 text-red-800";
-      case "Medium":
+      case "medium":
         return "bg-yellow-100 text-yellow-800";
-      case "Low":
+      case "low":
         return "bg-green-100 text-green-800";
       default:
         return "bg-gray-100 text-gray-800";
@@ -32,7 +32,7 @@ const ViewTask = ({ isOpen, onClose, task }: ViewTaskProps) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white md:m-0 m-8 rounded-xl p-6 w-full max-w-md">
         <div className="flex justify-between items-start mb-4">
           <h2 className="text-2xl font-bold text-gray-800">{task.title}</h2>
@@ -74,7 +74,7 @@ const ViewTask = ({ isOpen, onClose, task }: ViewTaskProps) => {
                 <span
                   className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-500 text-white"
                 >
-                  {task.category}
+                  {task.category.charAt(0).toUpperCase() + task.category.slice(1)}
                 </span>
               ) : (
                 <p className="mt-1 text-gray-700">Not specified</p>
@@ -89,7 +89,7 @@ const ViewTask = ({ isOpen, onClose, task }: ViewTaskProps) => {
                     task.priority
                   )}`}
                 >
-                  {task.priority}
+                  {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
                 </span>
               ) : (
                 <p className="mt-1 text-gray-700">Not specified</p>

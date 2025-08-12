@@ -10,5 +10,15 @@ export const formatDueDate =  (dueDate: Date | string): string => {
     if(diffDays === 1) return 'Due tomorrow';
     if(diffDays > 0) return `Due at ${diffDays} days`;
     return `Overdue by ${Math.abs(diffDays)} days`;
+}
+
+export const isTodayOrUpcoming = (date: Date | string) => {
+    const today = moment().startOf('day');
+    const targetDate = moment(date).startOf('day');
+
+    return {
+        isToday: targetDate.isSame(today, 'day'),
+        isUpcoming: targetDate.isAfter(today, 'day'),
+    };
 
 }

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { getStartOfToday } from "../utils/dateUtilsSchema";
 
 /**
  * @swagger
@@ -47,7 +48,7 @@ export const addTaskSchema = z.object({
         status: z.enum(["todo", "in-progress", "done"]),
         category: z.enum(["personal", "work", "college", "others"]),
         due_date: z.coerce.date()
-            .min(new Date(), "Due date cannot be past date"),
+            .min(getStartOfToday(), "Due date cannot be past date"),
         userId: z.number().int().positive(),  
     })
 });

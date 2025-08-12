@@ -2,7 +2,7 @@ import type { AxiosResponse } from "axios";
 import type { TaskProps } from "../types/Tasks";
 import { decodeToken } from "../utils/jwtDecode";
 import axios from "axios";
-import { API_URL } from "../utils/url";
+import { API_URL } from "../utils/vars";
 
 export const addTask = async (formData: TaskProps): Promise<AxiosResponse> => {
   const token = localStorage.getItem("token");

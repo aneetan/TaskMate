@@ -1,6 +1,7 @@
 import { createContext, useState, type ReactNode } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { refreshTokenAPI } from "../api/userApi";
+import { decodeToken, getUserId } from "../utils/jwtDecode";
 
 interface AuthContextProps {
    token: string | null;
@@ -8,6 +9,7 @@ interface AuthContextProps {
    login: (token: string, userId: number) => void;
    logout: () => void;
    isAuthenticated: boolean;
+   getValidToken: () => Promise<string | null>,
    refreshAccessToken: (userId: number) => Promise<string | null>;
 }
 
@@ -30,7 +32,14 @@ export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
       setUserId(null);
    }
 
-   const isAuthenticated = !!token;
+   const isAuthenticated = !!localStorage.getItem("token");
+
+   const isTokenValid = () => {
+      const  decoded = decodeToken(localStorage.getItem("token")!);
+      if (!decoded || !decoded.expiration) return false;
+
+      return decoded.expiration > Date.now() + 5000;
+   }
 
    const refreshTokenMutation = useMutation({
       mutationFn: refreshTokenAPI,
@@ -44,8 +53,7 @@ export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
             exact: true 
          });
       },
-      onError: (error) => {
-         console.error('Token refresh failed:', error);
+      onError: () => {
          logout();
       }
    })
@@ -55,13 +63,24 @@ export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
       return newToken;
    }; 
 
+   const getValidToken = async(): Promise<string | null> => {
+      if(!token) return null;
+
+      if (!isTokenValid){
+         return await refreshAccessToken(getUserId()!);
+      }
+
+      return token;
+   }
+
    const value: AuthContextProps = {
       token,
       userId,
       login,
       logout,
       isAuthenticated,
-      refreshAccessToken
+      refreshAccessToken,
+      getValidToken
    }
 
    return(

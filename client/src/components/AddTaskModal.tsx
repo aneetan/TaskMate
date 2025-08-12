@@ -23,7 +23,7 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
     priority: 'medium',
     due_date: null,
     status: initialStatus,
-    userId: null
+    userId: getUserId()!
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -59,7 +59,7 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
         priority: "medium",
         due_date: null,
         status: initialStatus,
-        userId: null
+        userId: getUserId()!
     })
   }
 
@@ -68,10 +68,11 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
 
     if (!formData.title.trim() || !formData.due_date) return;
 
+
     if (isEdit) {
       mutation.mutate({ taskId: formData.id!, formData});
     } else {
-      mutation.mutate(formData);
+      mutation.mutate({...formData, id: null});
     }
     
     onClose();
@@ -183,7 +184,7 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
                 >
                     {['low', 'medium', 'high'].map((level) => (
                     <option key={level} value={level}>
-                        {level}
+                        {level.charAt(0).toUpperCase() + level.slice(1)}
                     </option>
                     ))}
                 </select>
@@ -204,7 +205,7 @@ export const AddTaskModal = ({ isOpen, onClose, isEdit, taskToEdit, status: init
                 >
                     {['personal', 'work', 'college', 'others'].map((level) => (
                     <option key={level} value={level}>
-                        {level}
+                        {level.charAt(0).toUpperCase() + level.slice(1)}
                     </option>
                     ))}
                 </select>
